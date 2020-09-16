@@ -22,7 +22,7 @@ RUN apt-get update \
 	apt-utils \
 	gnupg \
 	redis-tools \
-	mysql-client \
+	default-mysql-client \
 	git \
 	vim \
 	wget \
@@ -45,11 +45,10 @@ RUN docker-php-ext-configure \
   	bcmath \
   	intl \
   	mbstring \
-  	mcrypt \
   	pdo_mysql \
   	soap \
-  	xsl \
-  	zip
+  	xsl
+#  	zip
 
 # Install oAuth
 
@@ -57,16 +56,22 @@ RUN apt-get update \
   	&& apt-get install -y \
   	libpcre3 \
   	libpcre3-dev \
+  	libevent-dev \
+  	libc-dev \
+  	make \
+  	gcc \
+  	autoconf \
+  	pkg-config \
   	# php-pear \
   	&& pecl install oauth \
   	&& echo "extension=oauth.so" > /usr/local/etc/php/conf.d/docker-php-ext-oauth.ini
 
 # Install Node, NVM, NPM and Grunt
 
-RUN curl -sL https://deb.nodesource.com/setup_6.x | bash - \
-  	&& apt-get install -y nodejs build-essential \
-    && curl https://raw.githubusercontent.com/creationix/nvm/v0.16.1/install.sh | sh \
-    && npm i -g grunt-cli yarn
+#RUN curl -sL https://deb.nodesource.com/setup_6.x | bash - \
+#  	&& apt-get install -y nodejs build-essential \
+#    && curl https://raw.githubusercontent.com/creationix/nvm/v0.16.1/install.sh | sh \
+#    && npm i -g grunt-cli yarn
 
 # Install Composer
 
@@ -83,7 +88,7 @@ ENV PATH="/var/www/.composer/vendor/bin/:${PATH}"
 
 # Install XDebug
 
-RUN yes | pecl install xdebug && \
+RUN yes | pecl install -o -f xdebug && \
 	 echo "zend_extension=$(find /usr/local/lib/php/extensions/ -name xdebug.so)" > /usr/local/etc/php/conf.d/xdebug.iniOLD
 
 # Install Mhsendmail
