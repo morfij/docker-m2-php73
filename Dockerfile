@@ -1,4 +1,4 @@
-FROM php:7.4-apache
+FROM php:7.3-apache
 
 MAINTAINER Rafael Corrêa Gomes <rafaelcgstz@gmail.com>
 
@@ -47,8 +47,9 @@ RUN docker-php-ext-configure \
   	mbstring \
   	pdo_mysql \
   	soap \
-  	xsl
-#  	zip
+  	xsl \
+  	zip \
+  	sockets
 
 # Install oAuth
 
