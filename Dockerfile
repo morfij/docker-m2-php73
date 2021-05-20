@@ -19,6 +19,7 @@ RUN apt-get update \
 	libedit-dev \
 	libedit2 \
 	libxslt1-dev \
+	libzip-dev \
 	apt-utils \
 	gnupg \
 	redis-tools \
@@ -57,7 +58,7 @@ RUN apt-get update \
   	&& apt-get install -y \
   	libpcre3 \
   	libpcre3-dev \
-  	libevent-dev \
+#  	libevent-dev \
   	libc-dev \
   	make \
   	gcc \
@@ -77,7 +78,7 @@ RUN apt-get update \
 # Install Composer
 
 RUN	curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin/ --filename=composer
-RUN composer global require hirak/prestissimo
+RUN composer global require hirak/prestissimo --ignore-platform-reqs
 
 # Install Code Sniffer
 
@@ -89,7 +90,7 @@ ENV PATH="/var/www/.composer/vendor/bin/:${PATH}"
 
 # Install XDebug
 
-RUN yes | pecl install -o -f xdebug && \
+RUN yes | pecl install -o -f xdebug-2.7 && \
 	 echo "zend_extension=$(find /usr/local/lib/php/extensions/ -name xdebug.so)" > /usr/local/etc/php/conf.d/xdebug.iniOLD
 
 # Install Mhsendmail
